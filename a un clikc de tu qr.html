@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A UN CLICK DE TU QR</title>
+    <!-- FUENTE POPPINS DE GOOGLE FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FONT AWESOME PARA LOS ICONOS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-yellow: #FF9F00; /* Amarillo Anaranjado */
+            --yellow-hover: #E68F00;
+            --yellow-glow: rgba(255, 159, 0, 0.25);
+            --bg-light: #FAFAFC;
+            --bg-card-light: #FFFFFF;
+            --bg-dark: #0D0D11;
+            --bg-card-dark: #16161D;
+            --border-light: #E2E8F0;
+            --border-dark: #2A2A35;
+            --text-dark: #0F172A;
+            --text-light: #F8FAFC;
+            --text-muted: #64748B;
+            --text-muted-dark: #A0A0AB;
+            --accent-blue: #FF9F00; /* Ajustado al tono principal */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* BARRA SUPERIOR FIJA */
+        .top-navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(13, 13, 17, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 2px solid var(--primary-yellow);
+            padding: 0.8rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .brand-logo {
+            color: var(--primary-yellow);
+            font-size: 1.1rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+            list-style: none;
+        }
+
+        .nav-link {
+            color: var(--text-muted-dark);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary-yellow);
+            background: rgba(255, 159, 0, 0.12);
+        }
+
+        /* BANNER PRINCIPAL */
+        .hero {
+            background: radial-gradient(circle at top, #2D1A00 0%, #000000 100%);
+            color: var(--text-light);
+            padding: 4rem 2rem 3rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary-yellow);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* MANEJO DE PANTALLAS DINÁMICAS */
+        .page-screen {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .page-screen.active-screen {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* CONTENEDORES DE SECCIÓN */
+        .section-wrapper {
+            padding: 4rem 1.5rem;
+            min-height: 70vh;
+        }
+
+        .section-wrapper.dark-bg {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            border-top: 1px solid var(--border-dark);
+            border-bottom: 1px solid var(--border-dark);
+        }
+
+        .container {
+            max-width: 1150px;
+            margin: 0 auto;
+        }
+
+        .title-block {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 2.5rem;
+            border-left: 5px solid var(--primary-yellow);
+            padding-left: 14px;
+        }
+
+        .title-block h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+        }
+
+        /* BENTO GRIDS AJUSTADOS */
+        .bento-grid-3 {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.8rem;
+        }
+
+        .bento-grid-inicio {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 1.8rem;
+            align-items: center;
+        }
+
+        .bento-grid-4 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* GRIDS ESPECIALES PARA SERVICIOS Y MARKETING */
+        .services-gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .marketing-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 2rem;
+        }
+
+        .marketing-flyers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 2.5rem;
+        }
+
+        /* TARJETAS */
+        .card-light {
+            background-color: var(--bg-card-light);
+            border: 1px solid var(--border-light);
+            color: var(--text-dark);
+            border-radius: 20px;
+            padding: 2.2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .card-dark {
+            background-color: var(--bg-card-dark);
+            border: 1px solid var(--border-dark);
+            color: var(--text-light);
+            border-radius: 20px;
+            padding: 2.2rem;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .card-light:hover, .card-dark:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-yellow);
+        }
+
+        .motto-banner {
+            background: linear-gradient(90deg, #FF9F00 0%, #FFC857 100%);
+            color: #000000;
+            padding: 2.2rem;
+            border-radius: 20px;
+            text-align: center;
+            font-weight: 800;
+            font-size: 1.5rem;
+            letter-spacing: 0.5px;
+            box-shadow: 0 10px 25px var(--yellow-glow);
+            margin-bottom: 2rem;
+        }
+
+        /* ESTILO DEL BOTÓN PDF INTEGRADO */
+        .btn-pdf {
+            display: inline-block;
+            background-color: var(--primary-yellow);
+            color: #000;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px var(--yellow-glow);
+        }
+
+        .btn-pdf:hover {
+            background-color: var(--yellow-hover);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        /* ESTILOS LISTA POLÍTICAS Y OFERTAS */
+        .policy-list {
+            list-style: none;
+            margin-top: 0.8rem;
+        }
+
+        .policy-list li {
+            font-size: 0.85rem;
+            color: var(--text-muted-dark);
+            margin-bottom: 0.4rem;
+            position: relative;
+            padding-left: 1.2rem;
+        }
+
+        .policy-list li::before {
+            content: "•";
+            color: var(--primary-yellow);
+            font-weight: bold;
+            font-size: 1.2rem;
+            position: absolute;
+            left: 0;
+            top: -2px;
+        }
+
+        /* ESTILO DESTACADO PARA SECCIÓN DE OFERTAS GRANDES */
+        .ofertas-container {
+            background: linear-gradient(145deg, #1A1A24 0%, #12121A 100%);
+            border: 2px solid var(--primary-yellow);
+            border-radius: 24px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 12px 35px rgba(255, 159, 0, 0.15);
+        }
+
+        .ofertas-title {
+            color: var(--primary-yellow);
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .ofertas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .oferta-item-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-dark);
+            border-radius: 16px;
+            padding: 1.2rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .oferta-item-card:hover {
+            border-color: var(--primary-yellow);
+            background: rgba(255, 159, 0, 0.08);
+            transform: translateY(-3px);
+        }
+
+        .oferta-item-title {
+            color: var(--text-light);
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .oferta-item-desc {
+            color: var(--text-muted-dark);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* MULTIMEDIA */
+        .media-box {
+            border-radius: 16px;
+            overflow: hidden;
+            background: #000;
+            border: 1px solid var(--border-dark);
+        }
+
+        .media-box img {
+            width: 100%;
+            height: auto;
+            max-height: 450px;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .media-box-service {
+            border-radius: 16px;
+            overflow: hidden;
+            background: #ffffff;
+            border: 1px solid var(--border-light);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .media-box-service:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-yellow);
+        }
+
+        .media-box-service img {
+            width: 100%;
+            height: auto;
+            max-height: 400px;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto 0.8rem;
+            border-radius: 12px;
+        }
+
+        .media-box-service span {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-yellow);
+        }
+
+        .media-box-extra-large {
+            border-radius: 20px;
+            overflow: hidden;
+            background: #000;
+            border: 2px solid var(--border-dark);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .media-box-extra-large img {
+            width: 100%;
+            height: auto;
+            max-height: 850px;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .media-box-card-large {
+            border-radius: 16px;
+            overflow: hidden;
+            background: #000;
+            border: 1px solid var(--border-dark);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+
+        .media-box-card-large img {
+            width: 100%;
+            height: auto;
+            max-height: 600px;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+        }
+
+        video {
+            width: 100%;
+            max-height: 480px;
+            border-radius: 12px;
+            display: block;
+            object-fit: cover;
+        }
+
+        .sub-title {
+            color: var(--primary-yellow);
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+
+        /* TARJETAS DE CONTACTO */
+        .contact-card {
+            background: var(--bg-card-dark);
+            border: 1px solid var(--border-dark);
+            padding: 1.5rem;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-card:hover {
+            border-color: var(--primary-yellow);
+            background: #1F1F28;
+        }
+
+        .contact-card a {
+            color: var(--primary-yellow);
+            text-decoration: none;
+            font-weight: 600;
+            word-break: break-all;
+        }
+
+        /* MAPA DEL SITIO */
+        .map-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .map-item {
+            background: var(--bg-card-light);
+            border: 1px solid var(--border-light);
+            padding: 1.2rem 1.5rem;
+            border-radius: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .map-item:hover {
+            background: var(--primary-yellow);
+            color: #000000;
+            border-color: var(--primary-yellow);
+            transform: translateY(-3px);
+        }
+
+        /* BOTÓN PARA VOLVER */
+        .btn-back {
+            display: inline-block;
+            margin-top: 2.5rem;
+            padding: 10px 20px;
+            background: var(--primary-yellow);
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .btn-back:hover {
+            background: var(--yellow-hover);
+            color: #fff;
+        }
+
+        /* FOOTER */
+        footer {
+            background-color: #000000;
+            color: var(--text-muted-dark);
+            padding: 3.5rem 1.5rem 2rem;
+            border-top: 1px solid var(--border-dark);
+        }
+
+        .footer-content {
+            max-width: 1150px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.8rem;
+        }
+
+        .footer-nav {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .footer-nav a {
+            color: var(--text-muted-dark);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        .footer-nav a:hover {
+            color: var(--primary-yellow);
+        }
+
+        @media (max-width: 850px) {
+            .bento-grid-3, .bento-grid-inicio { grid-template-columns: 1fr; }
+            .marketing-cards-grid, .marketing-flyers-grid, .services-gallery-grid { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+            .hero h1 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- MENÚ SUPERIOR FIJO -->
+    <header class="top-navbar">
+        <div class="brand-logo" onclick="switchScreen('inicio')">A UN CLICK DE TU QR</div>
+        <nav>
+            <ul class="nav-links">
+                <li><span onclick="switchScreen('inicio')" class="nav-link active" id="nav-inicio">Inicio</span></li>
+                <li><span onclick="switchScreen('nosotros')" class="nav-link" id="nav-nosotros">Nosotros</span></li>
+                <li><span onclick="switchScreen('servicios')" class="nav-link" id="nav-servicios">Servicios</span></li>
+                <li><span onclick="switchScreen('marketing')" class="nav-link" id="nav-marketing">Marketing</span></li>
+                <li><span onclick="switchScreen('soporte')" class="nav-link" id="nav-soporte">Soporte</span></li>
+                <li><span onclick="switchScreen('mapa-sitio')" class="nav-link" id="nav-mapa-sitio">Mapa del Sitio</span></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- BANNER DE BIENVENIDA -->
+    <section class="hero">
+        <h1>A UN CLICK DE TU QR</h1>
+    </section>
+
+    <!-- PANTALLA 1: INICIO -->
+    <div id="inicio" class="page-screen active-screen">
+        <section class="section-wrapper">
+            <div class="container">
+                <div class="title-block">
+                    <h2>1. Inicio</h2>
+                </div>
+                <div class="bento-grid-inicio">
+                    <div class="media-box">
+                        <img src="file:///C:/Users/ESTUDIANTE/Pictures/qr/logo.jpeg" alt="Logo A Un Click de tu QR">
+                    </div>
+                    <div class="card-light">
+                        <div class="sub-title">🎥 Video Publicitario</div>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">Descubre cómo funciona nuestra solución de pago con código QR.</p>
+                        <video controls>
+                            <source src="file:///C:/Users/ESTUDIANTE/Pictures/qr/video.mp4" type="video/mp4">
+                            Tu navegador no soporta la reproducción de video.
+                        </video>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- PANTALLA 2: NOSOTROS -->
+    <div id="nosotros" class="page-screen">
+        <section class="section-wrapper dark-bg">
+            <div class="container">
+                <div class="title-block">
+                    <h2>2. Filosofía Industrial</h2>
+                </div>
+
+                <div class="motto-banner">
+                    "PAGAR CON QR ES TAN FÁCIL COMO ELEGIR TU SNACK"
+                </div>
+
+                <div class="bento-grid-3" style="margin-bottom: 2rem;">
+                    <div class="card-dark" style="border-left: 4px solid var(--primary-yellow);">
+                        <div class="sub-title">🎯 Misión</div>
+                        <p style="color: var(--text-muted-dark);">Ofrecer una solución tecnológica práctica que facilite las compras mediante códigos QR y pagos digitales, mejorando la experiencia de los usuarios y ayudando a modernizar los sistemas de venta automatizados.</p>
+                    </div>
+                    <div class="card-dark">
+                        <div class="sub-title">🚀 Visión</div>
+                        <p style="color: var(--text-muted-dark); font-size: 0.9rem;">Convertirse en Bogotá en la solución líder para integrar pagos QR en máquinas expendedoras y expandirse a nivel nacional.</p>
+                    </div>
+                </div>
+
+                <div class="sub-title" style="margin-bottom: 1rem;">💎 Valores Corporativos</div>
+                <div class="bento-grid-4" style="margin-bottom: 3rem;">
+                    <div class="card-dark">
+                        <h4 style="color: var(--primary-yellow);">Innovación</h4>
+                        <p style="color: var(--text-muted-dark); font-size: 0.85rem; margin-top: 0.4rem;">Tecnología moderna para transformar la compra de productos.</p>
+                    </div>
+                    <div class="card-dark">
+                        <h4 style="color: var(--primary-yellow);">Rapidez</h4>
+                        <p style="color: var(--text-muted-dark); font-size: 0.85rem; margin-top: 0.4rem;">Compras al instante sin perder tiempo ni hacer filas.</p>
+                    </div>
+                    <div class="card-dark">
+                        <h4 style="color: var(--primary-yellow);">Seguridad</h4>
+                        <p style="color: var(--text-muted-dark); font-size: 0.85rem; margin-top: 0.4rem;">Protección total de transacciones y datos de usuario.</p>
+                    </div>
+                    <div class="card-dark">
+                        <h4 style="color: var(--primary-yellow);">Facilidad</h4>
+                        <p style="color: var(--text-muted-dark); font-size: 0.85rem; margin-top: 0.4rem;">Interfaz intuitiva y accesible para todo tipo de cliente.</p>
+                    </div>
+                </div>
+
+                <!-- POLÍTICAS DE VENTA -->
+                <div class="sub-title" style="margin-bottom: 1rem;">📜 Políticas de Venta</div>
+                <div class="bento-grid-4" style="margin-bottom: 3rem;">
+                    <div class="card-dark">
+                        <h4 style="color: var(--primary-yellow);">💳 Pagos y Precios</h4>
+                        <ul class="policy-list">
+                            <li><strong>Métodos:</strong> Nequi, Daviplata y QR digitales.</li>
+                            <li><strong>Precios:</strong> Incluyen impuestos vigentes.</li>
+                            <li><strong>Beneficios:</strong> Ofertas y descuentos frecuentes.</li>
+                        </ul>
+                    </div>
+                    <div class="card-dark">
+                        <h4 style="color: var(--primary-yellow);">📦 Entrega y Puntos</h4>
+                        <ul class="policy-list">
+                            <li><strong>Entrega:</strong> Inmediata al confirmar pago.</li>
+                            <li><strong>Envíos:</strong> Sin costo (retiro directo).</li>
+                            <li><strong>Ubicación:</strong> Colegios, U. y centros comerciales.</li>
+                        </ul>
+                    </div>
+                    <div class="card-dark">
+                        <h4 style="color: var(--primary-yellow);">🛡️ Garantía y Reclamos</h4>
+                        <ul class="policy-list">
+                            <li><strong>Soporte:</strong> Reembolso si hay falla o producto mal estado.</li>
+                            <li><strong>Plazo:</strong> 24 horas tras la compra.</li>
+                            <li><strong>Canales:</strong> WhatsApp, email o formulario web.</li>
+                        </ul>
+                    </div>
+                    <div class="card-dark">
+                        <h4 style="color: var(--primary-yellow);">🤝 Atención al Usuario</h4>
+                        <ul class="policy-list">
+                            <li><strong>Calidad:</strong> Monitoreo técnico constante.</li>
+                            <li><strong>Fidelidad:</strong> Sistema de puntos y promociones.</li>
+                            <li><strong>Encuestas:</strong> Evaluación periódica del servicio.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- MATERIAL GRÁFICO: AVATARES DE MÁXIMO TAMAÑO -->
+                <div class="sub-title" style="margin-bottom: 1rem;">👥 Equipo y Avatares de la Empresa</div>
+                <div class="media-box-extra-large" style="max-width: 1000px; margin: 0 auto;">
+                    <img src="file:///C:/Users/ESTUDIANTE/Pictures/qr/avatares.png" alt="Avatares de la Empresa">
+                </div>
+
+                <button class="btn-back" onclick="switchScreen('inicio')">← Volver al Inicio</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- PANTALLA 3: SERVICIOS -->
+    <div id="servicios" class="page-screen">
+        <section class="section-wrapper">
+            <div class="container">
+                <div class="title-block">
+                    <h2>3. Conoce Nuestros Servicios</h2>
+                </div>
+
+                <!-- Botón de descarga -->
+                <div style="margin-bottom: 1.5rem; text-align: center;">
+                    <a href="catalogo.pdf" target="_blank" download class="btn-pdf">
+                        <i class="fa-solid fa-file-pdf"></i> Descargar Catálogo (PDF)
+                    </a>
+                </div>
+
+                <!-- Visor del archivo PDF -->
+                <div style="width: 100%; height: 850px; border-radius: 8px; overflow: hidden; border: 1px solid var(--accent-blue); margin-bottom: 2.5rem;">
+                    <iframe src="catalogo.pdf#view=Fit" width="100%" height="100%" style="border: none;">
+                        <p>Tu navegador no soporta la visualización de PDF. 
+                           <a href="catalogo.pdf" target="_blank">Haz clic aquí para abrirlo.</a>
+                        </p>
+                    </iframe>
+                </div>
+
+                <div class="card-light" style="margin-bottom: 2rem;">
+                    <div class="sub-title">📌 Descripción General</div>
+                    <p style="color: var(--text-muted);">A UN CLICK DE TU QR es una pequeña empresa dedicada a la creación y comercialización de códigos QR personalizados para facilitar el acceso rápido a información, redes sociales, contactos, catálogos y diferentes servicios digitales de nuestros clientes.</p>
+                </div>
+
+                <!-- GALERÍA DE IMÁGENES ORDENADAS -->
+                <div class="sub-title" style="margin-bottom: 1rem; font-size: 1.4rem;">🖼️ Muestras y Diseños de Servicios</div>
+                <div class="services-gallery-grid">
+                    <div class="media-box-service">
+                        <img src="file:///C:/Users/ESTUDIANTE/Pictures/qr/loo.jpeg" alt="Muestra 1">
+                        <span>1.</span>
+                    </div>
+                    <div class="media-box-service">
+                        <img src="file:///C:/Users/ESTUDIANTE/Pictures/qr/poo.jpeg" alt="Muestra 2">
+                        <span>2.</span>
+                    </div>
+                    <div class="media-box-service">
+                        <img src="file:///C:/Users/ESTUDIANTE/Pictures/qr/t.jpeg" alt="Muestra 3">
+                        <span>3.</span>
+                    </div>
+                    <div class="media-box-service">
+                        <img src="file:///C:/Users/ESTUDIANTE/Pictures/qr/tr.jpeg" alt="Muestra 4">
+                        <span>4.</span>
+                    </div>
+                    <div class="media-box-service">
+                        <img src="file:///C:/Users/ESTUDIANTE/Pictures/qr/tt.jpeg" alt="Muestra 5">
+                        <span>5.</span>
+                    </div>
+                    <div class="media-box-service">
+                        <img src="file:///C:/Users/ESTUDIANTE/Pictures/qr/ttt.jpeg" alt="Muestra 6">
+                        <span>6.</span>
+                    </div>
+                </div>
+
+                <button class="btn-back" onclick="switchScreen('inicio')">← Volver al Inicio</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- PANTALLA 4: MARKETING -->
+    <div id="marketing" class="page-screen">
+        <section class="section-wrapper dark-bg">
+            <div class="container">
+                <div class="title-block">
+                    <h2>4. Marketing</h2>
+                </div>
+
+                <!-- SECCIÓN DE OFERTAS PARA CLIENTES -->
+                <div class="ofertas-container">
+                    <div class="ofertas-title">💰 Ofertas para Clientes</div>
+                    <div class="ofertas-grid">
+                        <div class="oferta-item-card">
+                            <div class="oferta-item-title">⚙️ Instalación gratis</div>
+                            <div class="oferta-item-desc">Instalamos la máquina sin costo inicial.</div>
+                        </div>
+
+                        <div class="oferta-item-card">
+                            <div class="oferta-item-title">🗓️ Primera semana gratis</div>
+                            <div class="oferta-item-desc">El cliente puede probar la máquina durante 7 días sin compromiso.</div>
+                        </div>
+
+                        <div class="oferta-item-card">
+                            <div class="oferta-item-title">📈 Comisión por ventas</div>
+                            <div class="oferta-item-desc">El establecimiento recibe un porcentaje de las ventas realizadas.</div>
+                        </div>
+
+                        <div class="oferta-item-card">
+                            <div class="oferta-item-title">🛠️ Mantenimiento incluido</div>
+                            <div class="oferta-item-desc">Mantenimiento y revisión de la máquina sin costo adicional.</div>
+                        </div>
+
+                        <div class="oferta-item-card">
+                            <div class="oferta-item-title">📦 Descuento por volumen</div>
+                            <div class="oferta-item-desc">Si compran o adquieren varias máquinas, reciben un descuento especial.</div>
+                        </div>
+
+                        <div class="oferta-item-card">
+                            <div class="oferta-item-title">🎨 Personalización gratis</div>
+                            <div class="oferta-item-desc">Adaptamos el diseño de la máquina con el logo y colores del establecimiento.</div>
+                        </div>
+
+                        <div class="oferta-item-card">
+                            <div class="oferta-item-title">🏢 Plan empresarial</div>
+                            <div class="oferta-item-desc">Máquina + instalación + mantenimiento + soporte técnico en un solo paquete.</div>
+                        </div>
+
+                        <div class="oferta-item-card">
+                            <div class="oferta-item-title">🚀 Promoción de lanzamiento</div>
+                            <div class="oferta-item-desc">Primer mes con condiciones especiales para los primeros establecimientos que adquieran el servicio.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECCIÓN DE TARJETAS DE PRESENTACIÓN AMPLIADAS -->
+                <div class="sub-title" style="margin-bottom: 1.2rem;">💳 Tarjetas de Presentación</div>
+                <div class="marketing-cards-grid" style="margin-bottom: 3.5rem;">
+                    <div>
+                        <div class="media-box-card-large">
+                            <img src="file:///C:/Users/ESTUDIANTE/Pictures/qr/tarjeta2.jpeg" alt="Tarjeta de Presentación 2">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="media-box-card-large">
+                            <img src="file:///C:/Users/ESTUDIANTE/Pictures/qr/tarjeta1.jpeg" alt="Tarjeta de Presentación 1">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="media-box-card-large">
+                            <img src="file:///C:/Users/ESTUDIANTE/Pictures/qr/tarjeta3.jpeg" alt="Tarjeta de Presentación 3">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="media-box-card-large">
+                            <img src="file:///C:/Users/ESTUDIANTE/Pictures/qr/tarjetadep.jpeg" alt="Tarjeta de Presentación 4">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECCIÓN DE VOLANTE Y FOLLETO AMPLIADOS -->
+                <div class="marketing-flyers-grid" style="margin-bottom: 2rem;">
+                    <div>
+                        <div class="sub-title" style="margin-bottom: 1rem; text-align: center; font-size: 1.3rem;">📢 Volante Publicitario</div>
+                        <div class="media-box-extra-large">
+                            <img src="file:///C:/Users/ESTUDIANTE/Pictures/qr/volante.png" alt="Volante Publicitario">
+                        </div>
+                    </div>
+                    <div>
+                        <div class="sub-title" style="margin-bottom: 1rem; text-align: center; font-size: 1.3rem;">📄 Folleto Publicitario</div>
+                        <div class="media-box-extra-large">
+                            <img src="file:///C:/Users/ESTUDIANTE/Pictures/qr/folleto%20.png" alt="Folleto Publicitario">
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn-back" onclick="switchScreen('inicio')">← Volver al Inicio</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- PANTALLA 5: SOPORTE -->
+    <div id="soporte" class="page-screen">
+        <section class="section-wrapper dark-bg">
+            <div class="container">
+                <div class="title-block">
+                    <h2>5. Soporte y Contacto</h2>
+                </div>
+
+                <div class="card-dark" style="margin-bottom: 1.5rem;">
+                    <p><strong>Ubicación:</strong> Bogotá, Colombia</p>
+                    <p><strong>Empresa:</strong> A UN CLICK DE TU QR</p>
+                </div>
+
+                <div class="bento-grid-4">
+                    <div class="contact-card">
+                        <span style="color: var(--text-muted-dark); font-size: 0.8rem;">Correo Electrónico</span>
+                        <a href="mailto:aunclickdetuqr@gmail.com">aunclickdetuqr@gmail.com</a>
+                    </div>
+                    <div class="contact-card">
+                        <span style="color: var(--text-muted-dark); font-size: 0.8rem;">Instagram</span>
+                        <a href="https://www.instagram.com/a_un_click_detu_qr" target="_blank">@a_un_click_detu_qr</a>
+                    </div>
+                    <div class="contact-card">
+                        <span style="color: var(--text-muted-dark); font-size: 0.8rem;">Facebook</span>
+                        <a href="https://www.facebook.com/profile.php?id=61589975526826" target="_blank">A Un Click tu QR</a>
+                    </div>
+                    <div class="contact-card">
+                        <span style="color: var(--text-muted-dark); font-size: 0.8rem;">TikTok</span>
+                        <a href="https://www.tiktok.com/@aunclickdetuqr" target="_blank">@aunclickdetuqr</a>
+                    </div>
+                </div>
+
+                <button class="btn-back" onclick="switchScreen('inicio')">← Volver al Inicio</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- PANTALLA 6: MAPA DEL SITIO -->
+    <div id="mapa-sitio" class="page-screen">
+        <section class="section-wrapper">
+            <div class="container">
+                <div class="title-block">
+                    <h2>6. Mapa del Sitio</h2>
+                </div>
+
+                <div class="map-grid">
+                    <div class="map-item" onclick="switchScreen('inicio')">
+                        <span>1. Inicio (Banner y Video)</span>
+                        <span>➔</span>
+                    </div>
+                    <div class="map-item" onclick="switchScreen('nosotros')">
+                        <span>2. Nosotros (Misión, Visión y Políticas)</span>
+                        <span>➔</span>
+                    </div>
+                    <div class="map-item" onclick="switchScreen('servicios')">
+                        <span>3. Servicios (Catálogo PDF y Muestras)</span>
+                        <span>➔</span>
+                    </div>
+                    <div class="map-item" onclick="switchScreen('marketing')">
+                        <span>4. Marketing (Folletos, Tarjetas y Promociones)</span>
+                        <span>➔</span>
+                    </div>
+                    <div class="map-item" onclick="switchScreen('soporte')">
+                        <span>5. Soporte y Contacto Oficial</span>
+                        <span>➔</span>
+                    </div>
+                </div>
+
+                <button class="btn-back" onclick="switchScreen('inicio')">← Volver al Inicio</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- FOOTER CON ENLACES RÁPIDOS -->
+    <footer>
+        <div class="footer-content">
+            <div class="brand-logo" onclick="switchScreen('inicio')">A UN CLICK DE TU QR</div>
+            <div class="footer-nav">
+                <a onclick="switchScreen('inicio')">Inicio</a>
+                <a onclick="switchScreen('nosotros')">Nosotros</a>
+                <a onclick="switchScreen('servicios')">Servicios</a>
+                <a onclick="switchScreen('marketing')">Marketing</a>
+                <a onclick="switchScreen('soporte')">Soporte</a>
+                <a onclick="switchScreen('mapa-sitio')">Mapa del Sitio</a>
+            </div>
+            <p style="font-size: 0.8rem; margin-top: 1rem;">
+                &copy; 2026 A UN CLICK DE TU QR — Bogotá, Colombia. Todos los derechos reservados.
+            </p>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVIDAD JS -->
+    <script>
+        function switchScreen(screenId) {
+            const screens = document.querySelectorAll('.page-screen');
+            screens.forEach(screen => {
+                screen.classList.remove('active-screen');
+            });
+
+            const targetScreen = document.getElementById(screenId);
+            if (targetScreen) {
+                targetScreen.classList.add('active-screen');
+            }
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => link.classList.remove('active'));
+            
+            const activeNav = document.getElementById('nav-' + screenId);
+            if (activeNav) {
+                activeNav.classList.add('active');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
